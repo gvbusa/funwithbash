@@ -9,6 +9,8 @@ trap handle_exit ERR EXIT
 #
 # To start the server, use this command from the within the same directory as this script:
 # ncat -lk -p 7777 --sh-exec "./http_server.sh"
+# Or to be more explicit:
+# ncat --listen --keep-open --source-port 7777 --sh-exec "./http_server.sh"
 
 
 #
@@ -47,11 +49,12 @@ function log_debug {
   fi
 }
 
-# Sends back http status line and headers. Echo the response payload after calling this function.
-function http_response {
+# Sends back http status line and headers.
+function send_http_response {
   local http_status_code=$1
   local http_status_msg=$2
   local content_type=$3
+  local payload=$4
 
   # send the status line
   echo "HTTP/1.1 $http_status_code $http_status_msg"
@@ -60,10 +63,11 @@ function http_response {
   echo "Content-Type: $content_type"
   echo "Server: funwithbash"
   echo ''
+  echo "${payload}"
 }
 
 # Parse the HTTP request and populate the HTTP globals
-function http_request() {
+function parse_http_request() {
   # read the raw request line
   read -r raw
 
@@ -121,8 +125,7 @@ function http_request() {
 #
 
 # parse the incoming request
-http_request
+parse_http_request
 
 # for now send a placeholder response back
-http_response 200 "OK" "text/html"
-echo "Have fun with bash!"
+send_http_response 200 "OK" "text/html" "Have fun with bash!"
