@@ -25,7 +25,7 @@ function exec_mongo {
 }
 
 # add given document to given collection
-function add {
+function add_one {
   local coll=$1
   local doc=$2
   local script="JSON.stringify(db.${coll}.insertOne(${doc}))"
@@ -44,6 +44,15 @@ function get_one {
   local coll=$1
   local id=$2
   local script="JSON.stringify(db.${coll}.findOne(ObjectId(\"${id}\")))"
+  exec_mongo "${script}"
+}
+
+# update given document with given object_id in given collection
+function update_one {
+  local coll=$1
+  local id=$2
+  local doc=$3
+  local script="JSON.stringify(db.${coll}.updateOne({\"_id\": ObjectId(\"${id}\")}, {\$set: ${doc}}))"
   exec_mongo "${script}"
 }
 

@@ -8,14 +8,27 @@
 source "./db_mongo.sh"
 
 # add a document
-output=$(add "tasks" '{"name": "My first task", "notes": "Write this test for db_mongo.sh!"}')
-echo "${output}"
+echo "testing add_one:"
+add_one "tasks" '{"name": "My first task", "notes": "Write this test for db_mongo.sh!"}'
 
 # get all documents
+echo "testing get_all:"
 output=$(get_all "tasks")
 echo "${output}"
 
 # get the id
 id=$(echo "${output}" | jq -r '.[]."_id"')
 echo "_id is ${id}"
+
+# update one
+echo "testing update_one:"
+updated_doc='{"name": "My updated task", "notes": "Updated - Write this test for db_mongo.sh!"}'
+update_one "tasks" "${id}" "${updated_doc}"
+
+# get one
+echo "testing get_one:"
+get_one "tasks" "${id}"
+
+# delete one
+echo "testing delete_one:"
 delete_one "tasks" "${id}"
