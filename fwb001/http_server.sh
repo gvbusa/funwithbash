@@ -90,7 +90,7 @@ function parse_http_request() {
         if [[ "$raw" == "Content-Length: "** ]]; then
             HTTP_REQUEST_LENGTH="$(sed 's/Content-Length: //' <<< $raw)"
             if [[ -z "${HTTP_REQUEST_LENGTH}" ]] || [[ "${HTTP_REQUEST_LENGTH}" == "0" ]]; then
-              send_http_response 400 "Bad Request" "test/html"
+              send_http_response 400 "Bad Request" "text/html"
               exit
             fi
         fi
