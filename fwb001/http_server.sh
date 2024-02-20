@@ -8,9 +8,9 @@ trap handle_exit ERR EXIT
 # HTTP requests. We will enhance it in future chapters.
 #
 # To start the server, use this command from the within the same directory as this script:
-# ncat -lk -p 7777 --sh-exec "./http_server.sh"
+# ncat -lk -p 7777 --sh-exec "./test_http_server.sh"
 # Or to be more explicit:
-# ncat --listen --keep-open --source-port 7777 --sh-exec "./http_server.sh"
+# ncat --listen --keep-open --source-port 7777 --sh-exec "./test_http_server.sh"
 
 
 #
@@ -33,7 +33,7 @@ declare -a HTTP_REQUEST_HEADERS
 # when script errors out
 function handle_exit {
   if [[ $? -ne 0 ]]; then
-    http_response 500 "Internal Server Error" "text/html"
+    send_http_response 500 "Internal Server Error" "text/html"
   fi
 }
 
@@ -89,8 +89,9 @@ function parse_http_request() {
     if [[ "$HTTP_REQUEST_METHOD" == "POST" ]]; then
         if [[ "$raw" == "Content-Length: "** ]]; then
             HTTP_REQUEST_LENGTH="$(sed 's/Content-Length: //' <<< $raw)"
-            if [[ -z "${HTTP_REQUEST_LENGTH}" ]]; then
-              exit 1
+            if [[ -z "${HTTP_REQUEST_LENGTH}" ]] || [[ "${HTTP_REQUEST_LENGTH}" == "0" ]]; then
+              send_http_response 400 "Bad Request" "test/html"
+              exit
             fi
         fi
     fi
@@ -120,12 +121,3 @@ function parse_http_request() {
 }
 
 
-#
-# main script
-#
-
-# parse the incoming request
-parse_http_request
-
-# for now send a placeholder response back
-send_http_response 200 "OK" "text/html" "Have fun with bash!"
