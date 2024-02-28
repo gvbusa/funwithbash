@@ -16,6 +16,7 @@ MONGO_URI="mongodb+srv://cluster0.cgru0nq.mongodb.net/fwb"
 
 export IN_PIPE=/tmp/in_pipe
 export OUT_PIPE=/tmp/out_pipe
+export PIPE_LOCK=/tmp/pipelock.lock
 
 #
 # functions

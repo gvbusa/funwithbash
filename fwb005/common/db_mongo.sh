@@ -17,6 +17,7 @@ MONGO_TIMEOUT=3
 
 #IN_PIPE=<get from environment variable>
 #OUT_PIPE=<get from environment variable>
+#PIPE_IN_USE=<get from environment variable>
 
 #
 # functions
@@ -25,6 +26,10 @@ MONGO_TIMEOUT=3
 # send script to mongosh running in background to have it executed
 function exec_mongo {
   local script=$1
+
+  # use lock to ensure that only one instance of bash script is doing this at one time
+  exec 100>$PIPE_LOCK || exit 1
+  flock 100 || exit 1
 
   # write command to IN_PIPE
   echo "${script}" >$IN_PIPE
