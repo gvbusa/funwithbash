@@ -17,7 +17,7 @@ MONGO_TIMEOUT=3
 
 #IN_PIPE=<get from environment variable>
 #OUT_PIPE=<get from environment variable>
-#PIPE_IN_USE=<get from environment variable>
+#PIPE_LOCK=<get from environment variable>
 
 #
 # functions

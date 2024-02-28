@@ -41,7 +41,7 @@ if ! [[ -p $OUT_PIPE ]]; then
 fi
 
 # run mongosh in background with named pipes for I/O
-mongosh "${MONGO_URI}" --quiet --norc--apiVersion 1 --username ${MONGO_USER} --password ${MONGO_PASSWORD} <$IN_PIPE >$OUT_PIPE &
+bash -c "mongosh ${MONGO_URI} --quiet --norc--apiVersion 1 --username ${MONGO_USER} --password ${MONGO_PASSWORD} <$IN_PIPE >$OUT_PIPE &"
 
 # run ncat
 ncat --listen --keep-open --source-port 7777 --sh-exec "./task_app.sh"
