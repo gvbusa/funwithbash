@@ -2,6 +2,11 @@
 
 # task list micro-service
 
+# imports
+source "./common/http_server.sh"
+source "./common/router.sh"
+source "./common/db_mongo.sh"
+
 #
 # functions
 #
