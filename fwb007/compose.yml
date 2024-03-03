@@ -1,11 +1,11 @@
 services:
   app:
-    image: fwb-task-list-app:latest
+    image: fwb-task-list-app:1.0.0
     env_file:
       - ../.env
 
   nginx:
-    image: fwb-nginx:latest
+    image: fwb-nginx:1.0.0
     ports:
       - "80:80"
       - "443:443"

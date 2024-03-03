@@ -1,6 +1,6 @@
 services:
   app:
-    image: fwb-task-list-app:latest
+    image: fwb-task-list-app:1.0.0
     env_file:
       - ../.env
     ports:
