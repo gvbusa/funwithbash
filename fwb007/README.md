@@ -7,4 +7,4 @@ accomplish this by doing the following:
 - Create an nginx configuration that
   - allows only HTTPS traffic, permanently redirecting HTTP traffic to HTTPS
   - forwards requests to the upstream task-list web app running on the same server as nginx
-- Run nginx in its own docker container
+- Build a fwb-nginx container that 

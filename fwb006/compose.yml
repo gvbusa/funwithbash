@@ -1,0 +1,7 @@
+services:
+  app:
+    image: fwb-task-list-app:latest
+    env_file:
+      - ../.env
+    ports:
+      - "7777:7777"
