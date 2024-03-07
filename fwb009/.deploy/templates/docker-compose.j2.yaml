@@ -1,8 +1,8 @@
 services:
   app:
-    image: fwb-task-list-app:1.0.0
+    image: gvbusa/{{ APP }}:{{ VERSION }}
     env_file:
-      - ../.env
+      - .env
 
   nginx:
     image: arm64v8/nginx:latest
@@ -10,5 +10,5 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./conf:/etc/nginx
-      - ./etc/ssl:/etc/ssl
+      - ./nginx:/etc/nginx
+      - ./ssl:/etc/ssl

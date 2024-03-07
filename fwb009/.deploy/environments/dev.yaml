@@ -1,0 +1,13 @@
+app: fwb-task-list
+environment: dev
+vpc_id: vpc-036ca56e675f49df5
+subnet_id: subnet-0e197933316d3a26c
+instance_type: t4g.small
+ami: ami-0f93c02efd1974b8b
+ssh_key_name: fwb-dev
+access_from_cidr: 108.226.28.121/32
+ssh_from_cidr: 108.226.28.121/32
+domain_name: task-list.funwithbash.com
+app_port: 7777
+secrets:
+  -

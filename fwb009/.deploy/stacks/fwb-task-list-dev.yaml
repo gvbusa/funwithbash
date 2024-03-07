@@ -1,0 +1,93 @@
+Resources:
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "Security Group for fwb-task-list"
+      GroupDescription: "Security Group for fwb-task-list"
+      VpcId: vpc-036ca56e675f49df5
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 108.226.28.121/32
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp:  108.226.28.121/32
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 108.226.28.121/32
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: fwb-task-list
+        - Key: Environment
+          Value: dev
+
+  ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref EC2Instance
+      Tags:
+        - Key: Name
+          Value: fwb-task-list
+        - Key: Environment
+          Value: dev
+
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-0f93c02efd1974b8b
+      InstanceType: t4g.small
+      KeyName: fwb-dev
+      SubnetId: subnet-0e197933316d3a26c
+      SecurityGroupIds:
+        - Ref: InstanceSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 20
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # runs after ec2 instance boots up
+          # installs docker and docker-compose, starts docker service
+
+          yum update
+
+          # install docker and allow ec2-user to run it
+          yum install -y docker
+          usermod -a -G docker ec2-user
+          id ec2-user
+          newgrp docker
+
+          # start docker service
+          systemctl enable docker.service
+          systemctl start docker.service
+
+          # install docker-compose
+          yum install -y python3-pip
+          pip3 install docker-compose==1.28.0
+
+          # create directories for nginx files
+          mkdir -p nginx
+          mkdir -p ssl
+
+      Tags:
+        - Key: Name
+          Value: fwb-task-list
+        - Key: Environment
+          Value: dev
+
+Outputs:
+  PublicIp:
+    Value:
+      Fn::GetAtt:
+        - EC2Instance
+        - PublicIp
+    Description: Server's PublicIp Address

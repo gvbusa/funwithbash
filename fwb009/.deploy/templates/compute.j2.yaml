@@ -1,0 +1,70 @@
+Resources:
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "Security Group for {{ app }}"
+      GroupDescription: "Security Group for {{ app }}"
+      VpcId: {{ vpc_id }}
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: {{ access_from_cidr }}
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp:  {{ access_from_cidr }}
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: {{ ssh_from_cidr }}
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: {{ app }}
+        - Key: Environment
+          Value: {{ environment }}
+
+  ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref EC2Instance
+      Tags:
+        - Key: Name
+          Value: {{ app }}
+        - Key: Environment
+          Value: {{ environment }}
+
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: {{ ami }}
+      InstanceType: {{ instance_type }}
+      KeyName: {{ ssh_key_name }}
+      SubnetId: {{ subnet_id }}
+      SecurityGroupIds:
+        - Ref: InstanceSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 20
+      UserData:
+        Fn::Base64: !Sub |
+          {% filter indent(width=10) %}{% include './templates/userdata.sh' %}{% endfilter %}
+      Tags:
+        - Key: Name
+          Value: {{ app }}
+        - Key: Environment
+          Value: {{ environment }}
+
+Outputs:
+  PublicIp:
+    Value:
+      Fn::GetAtt:
+        - EC2Instance
+        - PublicIp
+    Description: Server's PublicIp Address

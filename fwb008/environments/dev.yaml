@@ -1,0 +1,13 @@
+owner: fwb
+environment: dev
+vpc_cidr: 10.0.0.0/16
+subnet_cidr: 10.0.0.0/24
+subnet_az: us-east-1a
+instance_type: t4g.small
+ami: ami-0f93c02efd1974b8b
+ssh_key_name: fwb-dev
+access_from_cidr: 108.226.28.121/32
+ssh_from_cidr: 108.226.28.121/32
+domain_name: dev.funwithbash.com
+app_port: 7777
+
