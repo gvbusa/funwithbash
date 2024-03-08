@@ -34,14 +34,13 @@ function exec_mongo {
   # write command to IN_PIPE
   echo "${script}" >$IN_PIPE
 
-  # discard prompt
-  read -n 1000 -d ">" -t $MONGO_TIMEOUT discard <$OUT_PIPE
-
   # read response line
   read -r -t $MONGO_TIMEOUT line <$OUT_PIPE
   if [[ -z "${line}" ]]; then
     log_info "Error: Database timeout"
     return
+  elif [[ "${line}" == Atlas* ]]; then # discard prompt
+    line=${line##Atlas*\>}
   fi
 
   # return database response
