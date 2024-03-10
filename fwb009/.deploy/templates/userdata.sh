@@ -23,5 +23,5 @@ mkdir -p nginx
 mkdir -p ssl
 
 # chown to ec2-user
-chown ec2-user:ec2-user nginx
-chown ec2-user:ec2-user ssl
+chown -R ec2-user:ec2-user nginx
+chown -R ec2-user:ec2-user ssl
