@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# build docker images and push them to private docker registry
+# build docker images and push them to private docker repository
 # should have first logged in to docker registry using "docker login -u <username>"
 # ./build.sh <version>
 
