@@ -11,8 +11,13 @@ fi
 APP=$1
 ENVIRONMENT=$2
 
+# get vpc_id and subnet_id from environment stack
+export VPC_ID=$(aws cloudformation describe-stacks --stack-name env-${ENVIRONMENT} | jq -r '.Stacks[].Outputs[].OutputValue' | grep vpc)
+export SUBNET_ID=$(aws cloudformation describe-stacks --stack-name env-${ENVIRONMENT} | jq -r '.Stacks[].Outputs[].OutputValue' | grep subnet)
+
+
 # generate stack from template
-j2 ./templates/compute.j2.yaml ./environments/${ENVIRONMENT}.yaml > ./stacks/${APP}-${ENVIRONMENT}.yaml
+j2 ./templates/compute.j2.yaml ./environments/${ENVIRONMENT}.yaml > ./.generated/${APP}-${ENVIRONMENT}.yaml
 
 # deploy the stack
-aws cloudformation deploy --template-file ./stacks/${APP}-${ENVIRONMENT}.yaml --stack-name ${APP}-${ENVIRONMENT}
+aws cloudformation deploy --template-file ./.generated/${APP}-${ENVIRONMENT}.yaml --stack-name ${APP}-${ENVIRONMENT}

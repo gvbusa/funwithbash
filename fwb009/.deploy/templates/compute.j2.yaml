@@ -5,7 +5,7 @@ Resources:
     Properties:
       GroupName: "Security Group for {{ app }}"
       GroupDescription: "Security Group for {{ app }}"
-      VpcId: {{ vpc_id }}
+      VpcId: {{ env('VPC_ID') }}
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '80'
@@ -45,7 +45,7 @@ Resources:
       ImageId: {{ ami }}
       InstanceType: {{ instance_type }}
       KeyName: {{ ssh_key_name }}
-      SubnetId: {{ subnet_id }}
+      SubnetId: {{ env('SUBNET_ID') }}
       SecurityGroupIds:
         - Ref: InstanceSecurityGroup
       BlockDeviceMappings:
