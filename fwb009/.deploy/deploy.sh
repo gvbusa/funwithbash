@@ -17,8 +17,9 @@ export TARGET=$(aws cloudformation describe-stacks --stack-name ${APP}-${ENVIRON
 
 # secrets location
 SECRETS=../.secrets/${ENVIRONMENT}
+
 # pem file location for scp and ssh commands
-PEM_FILE=${SECRETS}/fwb-${ENVIRONMENT}.pem
+PEM_FILE=${SECRETS}/${APP}-${ENVIRONMENT}.pem
 
 # fetch secrets and copy them to target
 scp -i ${PEM_FILE} ${SECRETS}/.env ec2-user@"${TARGET}":.env

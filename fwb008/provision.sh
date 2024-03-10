@@ -10,6 +10,9 @@ if [[ $# -ne 1 ]]; then
 fi
 ENVIRONMENT=$1
 
+# create .generated directory
+mkdir -p .generated
+
 # generate stack from template
 j2 ./templates/env.j2.yaml ./environments/${ENVIRONMENT}.yaml > ./stacks/env-${ENVIRONMENT}.yaml
 

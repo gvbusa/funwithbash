@@ -11,6 +11,9 @@ fi
 APP=$1
 ENVIRONMENT=$2
 
+# create .generated directory
+mkdir -p .generated
+
 # get vpc_id and subnet_id from environment stack
 export VPC_ID=$(aws cloudformation describe-stacks --stack-name env-${ENVIRONMENT} | jq -r '.Stacks[].Outputs[].OutputValue' | grep vpc)
 export SUBNET_ID=$(aws cloudformation describe-stacks --stack-name env-${ENVIRONMENT} | jq -r '.Stacks[].Outputs[].OutputValue' | grep subnet)
