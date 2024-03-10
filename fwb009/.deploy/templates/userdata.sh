@@ -19,9 +19,9 @@ yum install -y python3-pip
 pip3 install docker-compose==1.28.0
 
 # create directories for nginx files
-mkdir -p nginx
-mkdir -p ssl
+mkdir -p /home/ec2-user/nginx
+mkdir -p /home/ec2-user/ssl
 
 # chown to ec2-user
-chown -R ec2-user:ec2-user nginx
-chown -R ec2-user:ec2-user ssl
+chown -R ec2-user:ec2-user /home/ec2-user/nginx
+chown -R ec2-user:ec2-user /home/ec2-user/ssl
