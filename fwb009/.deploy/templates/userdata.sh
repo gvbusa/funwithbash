@@ -21,3 +21,7 @@ pip3 install docker-compose==1.28.0
 # create directories for nginx files
 mkdir -p nginx
 mkdir -p ssl
+
+# chown to ec2-user
+chown ec2-user:ec2-user nginx
+chown ec2-user:ec2-user ssl

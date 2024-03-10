@@ -18,7 +18,7 @@ export TARGET=$(aws cloudformation describe-stacks --stack-name ${APP}-${ENVIRON
 # secrets location
 SECRETS=../.secrets/${ENVIRONMENT}
 # pem file location for scp and ssh commands
-PEM_FILE=${SECRETS}/${APP}-${ENVIRONMENT}.pem
+PEM_FILE=${SECRETS}/fwb-${ENVIRONMENT}.pem
 
 # fetch secrets and copy them to target
 scp -i ${PEM_FILE} ${SECRETS}/.env ec2-user@"${TARGET}":.env
@@ -38,7 +38,7 @@ DOCKER_TOKEN=$(cat ${SECRETS}/.env | grep "DOCKER_TOKEN" | awk -F'=' '{print $2}
 
 # go to the target machine and execute commands
 ssh -i ${PEM_FILE} ec2-user@"${TARGET}" /bin/bash << EOF
-echo "${DOCKER_TOKEN}" | docker-login -u ${DOCKER_USER} --password-stdin
+echo "${DOCKER_TOKEN}" | docker login -u ${DOCKER_USER} --password-stdin
 docker-compose down
 nohup docker-compose up >out.log 2>err.log &
 EOF
