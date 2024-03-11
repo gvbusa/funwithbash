@@ -12,4 +12,5 @@ Following is the list of pre-requisites that should be installed or setup:
 - mongosh - https://www.mongodb.com/docs/mongodb-shell/
 - jq - https://jqlang.github.io/jq/download/
 - flock (File Locking) - On macOS "brew install flock"
-
+- aws-cli - https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+- j2cli - https://github.com/kolypto/j2cli
