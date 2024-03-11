@@ -2,7 +2,8 @@
 In the previous chapter we provisioned a "dev" environment in AWS.
 
 In this chapter we will provision an EC2 instance in the "dev"
-environment in which to deploy the task-list app. We will 
+environment in which to deploy the task-list app. On the EC2 Instance we will
+install docker and docker-compose, and start the docker service. We will 
 then deploy the task-list app and the nginx reverse-proxy to it.
 
 ### Secrets Management
