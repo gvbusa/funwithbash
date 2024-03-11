@@ -1,5 +1,5 @@
 # funwithbash
-A bunch of fun bash scripts that no one in their right mind should take seriously:)
+A bunch of fun bash scripts that showcase the versatility of the language.
 
 This repository contains the code referenced by the posts in this blog:
 
