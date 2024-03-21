@@ -1,0 +1,9 @@
+app: fwb-task-list
+environment: dev
+instance_type: t4g.small
+ami: ami-0f93c02efd1974b8b
+ssh_key_name: fwb-task-list-dev
+access_from_cidr: 0.0.0.0/0
+ssh_from_cidr: 67.173.128.40/32
+domain_name: fwb-task-list-dev.funwithbash.com
+app_port: 7777

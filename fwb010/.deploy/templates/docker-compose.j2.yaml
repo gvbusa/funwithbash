@@ -1,0 +1,16 @@
+services:
+  app:
+    image: gvbusa/{{ APP }}:{{ VERSION }}
+    pull_policy: always
+    env_file:
+      - .env
+
+  nginx:
+    image: arm64v8/nginx:latest
+    pull_policy: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./ssl:/etc/ssl
