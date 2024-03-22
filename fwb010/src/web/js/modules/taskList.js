@@ -8,7 +8,10 @@ async function renderTaskList() {
     try {
         let response = await axios.get('/api/task');
         if (! response) return;
-        document.getElementById("main").innerHTML = getCardListHtml("Task List", "task", response.data);
+        if (document.documentElement.clientWidth < 576)
+            document.getElementById("main").innerHTML = getCardListHtml("Task List", "task", response.data);
+        else
+            document.getElementById("main").innerHTML = getTableHtml("Task List", "task", response.data);
     } catch (err) {
         setError(err.response.data.error);
     }
