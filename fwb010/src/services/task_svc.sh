@@ -45,6 +45,13 @@ function handle_update_task_by_id() {
   local result=$(get_one "tasks" "${id}")
   handle_db_errors "${result}"
 
+  # then ensure that it is owned by the authenticated user:
+  local email=$(echo "${result}" | jq -r '.email')
+  if [[ "${email}" != "${USER_EMAIL}" ]]; then
+    send_http_response 404 "Not found" "application/json" '{error: "Resource not found"}'
+    exit 1
+  fi
+
   # then validate the payload
   validate_task "${HTTP_REQUEST_BODY}"
 
@@ -59,6 +66,14 @@ function handle_get_task_by_id() {
   local id=${BASH_REMATCH[1]}
   local result=$(get_one "tasks" "${id}")
   handle_db_errors "${result}"
+
+  # then ensure that it is owned by the authenticated user:
+  local email=$(echo "${result}" | jq -r '.email')
+  if [[ "${email}" != "${USER_EMAIL}" ]]; then
+    send_http_response 404 "Not found" "application/json" '{error: "Resource not found"}'
+    exit 1
+  fi
+
   local task=$(echo "${result}" | jq -c 'del(.email)')
   send_http_response 200 "OK" "application/json" "${task}"
 }
@@ -69,6 +84,13 @@ function handle_delete_task_by_id() {
   # first ensure that doc with id exists
   local result=$(get_one "tasks" "${id}")
   handle_db_errors "${result}"
+
+  # then ensure that it is owned by the authenticated user:
+  local email=$(echo "${result}" | jq -r '.email')
+  if [[ "${email}" != "${USER_EMAIL}" ]]; then
+    send_http_response 404 "Not found" "application/json" '{error: "Resource not found"}'
+    exit 1
+  fi
 
   local result=$(delete_one "tasks" "${id}")
   handle_db_errors "${result}"

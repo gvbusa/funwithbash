@@ -202,25 +202,6 @@ function handle_change_password() {
   send_http_response 200 "OK" "application/json" "${result}"
 }
 
-function handle_get_user_by_email() {
-  local email=${BASH_REMATCH[1]}
-  local result=$(get_one_by_filter "users" '{email: "'${email}'"}')
-  handle_db_errors "${result}"
-  send_http_response 200 "OK" "application/json" "${result}"
-}
-
-function handle_delete_user_by_id() {
-  local id=${BASH_REMATCH[1]}
-
-  # first ensure that doc with id exists
-  local result=$(get_one "users" "${id}")
-  handle_db_errors "${result}"
-
-  local result=$(delete_one "users" "${id}")
-  handle_db_errors "${result}"
-  send_http_response 204 "No Content" "application/json" "${result}"
-}
-
 # add routes
 add_route_anon 'POST' '^/api/login$' 'handle_login_user'
 add_route_anon 'POST' '^/api/signup$' 'handle_signup_user'
@@ -230,5 +211,3 @@ add_route_anon 'GET' '^/api/resetPassword/(.+)$' 'handle_reset_password'
 add_route 'POST' '^/api/logout$' 'handle_logout_user'
 add_route 'GET' '^/api/authValid$' 'handle_auth_valid'
 add_route 'POST' '^/api/changePassword$' 'handle_change_password'
-add_route 'GET' '^/api/user/(.+)$' 'handle_get_user_by_email'
-add_route 'DELETE' '^/api/user/(.+)$' 'handle_delete_user_by_id'
