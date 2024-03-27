@@ -25,13 +25,22 @@ function validate_user() {
 
   # email is required, not empty, and is xss protected
   if [[ "${email}" == "null" ]] || [[ -z "${email}" ]] || [[ "${email}" =~ [\<\>]+ ]]; then
-    send_http_response 400 "Bad Request" "text/html" '{"error": "\"email\": cannot be empty and cannot contain < or > characters"}'
+    send_http_response 400 "Bad Request" "application/json" '{"error": "\"email\": cannot be empty and cannot contain < or > characters"}'
+    exit 1
+  fi
+
+  # email conforms to pattern
+  local email_regex='.+\@.+\..+'
+  if [[ "${email}" =~ ${email_regex} ]]; then
+    :
+  else
+    send_http_response 400 "Bad Request" "application/json" '{"error": "\"email\": should comply with typical email pattern of name@domain.domain-extension, eg. abc@gmail.com"}'
     exit 1
   fi
 
   # password is required, not empty, and is xss protected
   if [[ "${password}" == "null" ]]  || [[ -z "${password}" ]] || [[ "${password}" =~ [\<\>]+ ]]; then
-    send_http_response 400 "Bad Request" "text/html" '{"error": "\"password\": cannot be empty and cannot contain < or > characters"}'
+    send_http_response 400 "Bad Request" "application/json" '{"error": "\"password\": cannot be empty and cannot contain < or > characters"}'
     exit 1
   fi
 }
